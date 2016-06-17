@@ -11,3 +11,5 @@
 .idea/
 .idea_modules/
 target/
+num/
+conf/env.sh
