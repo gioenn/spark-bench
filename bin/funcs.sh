@@ -165,7 +165,7 @@ function MKDIR() {
     if [ ! -z `echo $DATA_HDFS | grep "^file://"` ]; then
        /bin/mkdir -p ${tmpdir:7};
     else
-      ${HADOOP_HOME}/bin/hdfs dfs -mkdir -p $tmpdir
+      sudo -u hadoop ${HADOOP_HOME}/bin/hdfs dfs -mkdir -p $tmpdir
     fi
 }
 function DU() { 
