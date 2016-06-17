@@ -4,8 +4,7 @@ DIR=`dirname "$0"`
 DIR=`cd "${DIR}/.."; pwd`
 cd $DIR
 
-mvn package -P spark1.6     
-
+mvn package -P spark1.6
 
 result=$?
 
