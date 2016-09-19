@@ -18,17 +18,17 @@
 package src.main.scala
 import org.apache.log4j.Logger
 import org.apache.log4j.Level
-import org.apache.spark.{SparkContext,SparkConf, Logging}
+import org.apache.spark.{SparkContext,SparkConf}
 import org.apache.spark.SparkContext._
 import org.apache.spark.graphx._
 import org.apache.spark.graphx.lib._
 import org.apache.spark.graphx.util.GraphGenerators
 import org.apache.spark.rdd._
-
+import org.apache.spark.internal.Logging
 import org.apache.spark.storage.StorageLevel
 import org.apache.spark.graphx.impl.{EdgePartitionBuilder, GraphImpl}
 
-object pageRankDataGenRun extends Logging{
+object pageRankDataGenRun{
   
   def main(args: Array[String]) {
 Logger.getLogger("org.apache.spark").setLevel(Level.WARN);

@@ -13,7 +13,7 @@ echo "========== running ${APP} benchmark =========="
 
 DU ${INPUT_HDFS} SIZE 
 
-JAR="${DIR}/target/scala-2.10/pagerankapp_2.10-1.0.jar"
+JAR="${DIR}/target/PageRankApp-1.0.jar"
 CLASS="src.main.scala.pageRankDataGenRun"
 OPTION="${INPUT_HDFS} ${OUTPUT_HDFS}  ${numV} ${NUM_OF_PARTITIONS} ${mu} ${sigma} ${MAX_ITERATION} ${TOLERANCE} ${RESET_PROB}"
 
@@ -26,7 +26,7 @@ for((i=0;i<${NUM_TRIALS};i++)); do
 	purge_data "${MC_LIST}"	
 	START_TIME=`timestamp`
 START_TS=`get_start_ts`;
-	echo_and_run sh -c " ${SPARK_HOME}/bin/spark-submit --class $CLASS --master ${APP_MASTER} ${YARN_OPT} --conf spark.storage.memoryFraction=${memoryFraction} --conf spark.executor.memory=1g $JAR ${OPTION} 2>&1|tee ${BENCH_NUM}/${APP}_run_${START_TS}.dat"
+	echo_and_run sh -c " ${SPARK_HOME}/bin/spark-submit --class $CLASS --master ${APP_MASTER} ${YARN_OPT} --conf spark.memory.fraction=${SPARK_STORAGE_MEMORYFRACTION} --conf spark.executor.cores=${SPARK_EXECUTOR_CORE} --conf spark.executor.memory=1g $JAR ${OPTION} 2>&1|tee ${BENCH_NUM}/${APP}_run_${START_TS}.dat"
 res=$?;
 	END_TIME=`timestamp`
 get_config_fields >> ${BENCH_REPORT}
