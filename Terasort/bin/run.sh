@@ -25,7 +25,7 @@ for((i=0;i<${NUM_TRIALS};i++)); do
     purge_data "${MC_LIST}"	
     START_TS=`get_start_ts`;
     START_TIME=`timestamp`
-    echo_and_run sh -c " ${SPARK_HOME}/bin/spark-submit --class $CLASS --master ${APP_MASTER} --conf spark.executor.cores=${SPARK_EXECUTOR_CORE} --conf spark.cores.max=${SPARK_CORES_MAX} ${YARN_OPT} ${SPARK_OPT} ${SPARK_RUN_OPT} ${Addition_jar} $JAR ${OPTION} 2>&1|tee ${BENCH_NUM}/${APP}_run_${START_TS}.dat"
+    echo_and_run sh -c " ${SPARK_HOME}/bin/spark-submit --class $CLASS --master ${APP_MASTER} --conf spark.executor.cores=${SPARK_EXECUTOR_CORE} --conf spark.cores.max=${SPARK_CORES_MAX} --conf spark.executor.memory=${SPARK_EXECUTOR_MEMORY} ${YARN_OPT} ${SPARK_OPT} ${SPARK_RUN_OPT} ${Addition_jar} $JAR ${OPTION} 2>&1|tee ${BENCH_NUM}/${APP}_run_${START_TS}.dat"
     res=$?;
     END_TIME=`timestamp`
     get_config_fields >> ${BENCH_REPORT}

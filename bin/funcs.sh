@@ -101,10 +101,7 @@ function teardown() {
 function set_gendata_opt() {
   SPARK_OPT=
   if [ ! -z "$SPARK_STORAGE_MEMORYFRACTION" ]; then
-    SPARK_OPT="${SPARK_OPT} --conf spark.memory.storageFraction=${SPARK_STORAGE_MEMORYFRACTION}"
-  fi
-  if [ ! -z "$SPARK_MEMORY_FRACTION" ]; then
-    SPARK_OPT="${SPARK_OPT} --conf spark.memory.fraction=${SPARK_MEMORY_FRACTION}"
+    SPARK_OPT="${SPARK_OPT} --conf spark.memory.fraction=${SPARK_STORAGE_MEMORYFRACTION}"
   fi
   if [ ! -z "$SPARK_EXECUTOR_MEMORY" ]; then
     SPARK_OPT="${SPARK_OPT} --conf spark.executor.memory=${SPARK_EXECUTOR_MEMORY}"
