@@ -21,9 +21,10 @@
  * and open the template in the editor.
  */
 package src.main.scala
+
 import org.apache.log4j.Logger
 import org.apache.log4j.Level
-import org.apache.spark.{ SparkContext, SparkConf}
+import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.SparkContext._
 import org.apache.spark.graphx._
 import org.apache.spark.graphx.lib._
@@ -31,7 +32,9 @@ import org.apache.spark.graphx.util.GraphGenerators
 import org.apache.spark.rdd._
 import org.apache.spark.internal.Logging
 import org.apache.spark.storage.StorageLevel
-import org.apache.spark.graphx.impl.{ EdgePartitionBuilder, GraphImpl }
+import org.apache.spark.graphx.impl.{EdgePartitionBuilder, GraphImpl}
+
+import scala.collection.immutable.HashMap
 
 object pagerankApp {
 
@@ -40,38 +43,38 @@ object pagerankApp {
       println("usage: <input> <output> <minEdge> <maxIterations> <tolerance> <resetProb> <StorageLevel>")
       System.exit(0)
     }
-	Logger.getLogger("org.apache.spark").setLevel(Level.INFO)
+    Logger.getLogger("org.apache.spark").setLevel(Level.INFO)
     Logger.getLogger("org.eclipse.jetty.server").setLevel(Level.OFF)
-	
+
     val conf = new SparkConf
     conf.setAppName("Spark PageRank Application")
     val sc = new SparkContext(conf)
-	//conf.registerKryoClasses(Array(classOf[pagerankApp] ))
-		
+    //conf.registerKryoClasses(Array(classOf[pagerankApp] ))
+
     val input = args(0)
     val output = args(1)
     val minEdge = args(2).toInt
     val maxIterations = args(3).toInt
     val tolerance = args(4).toDouble
     val resetProb = args(5).toDouble
-	val storageLevel=args(6)
-	
-	var sl:StorageLevel=StorageLevel.MEMORY_ONLY;
-	if(storageLevel=="MEMORY_AND_DISK_SER")
-		sl=StorageLevel.MEMORY_AND_DISK_SER
-	else if(storageLevel=="MEMORY_AND_DISK")
-		sl=StorageLevel.MEMORY_AND_DISK
-		
+    val storageLevel = args(6)
+
+    val storageLevelMap = HashMap("MEMORY_AND_DISK_SER" -> StorageLevel.MEMORY_AND_DISK_SER,
+      "MEMORY_AND_DISK" -> StorageLevel.MEMORY_AND_DISK, "MEMORY_AND_DISK_2" -> StorageLevel.MEMORY_AND_DISK_2,
+      "DISK_ONLY" -> StorageLevel.DISK_ONLY, "OFF_HEAP" -> StorageLevel.OFF_HEAP)
+    val sl: StorageLevel = storageLevelMap.getOrElse(storageLevel, StorageLevel.MEMORY_AND_DISK)
+
     val graph = GraphLoader.edgeListFile(sc, input, true, minEdge, sl, sl)
 
 
-	
-    val staticRanks = graph.staticPageRank(maxIterations, resetProb).vertices
-    staticRanks.saveAsTextFile(output);
 
-    sc.stop();
+    val staticRanks = graph.staticPageRank(maxIterations, resetProb).vertices
+    staticRanks.saveAsTextFile(output)
+
+    sc.stop()
 
   }
+
   def pagerank_usingSampledata(sc: SparkContext, input: String, output: String,
                                maxIterations: Integer, tolerance: Double, resetProb: Double) {
     val graph = GraphLoader.edgeListFile(sc, input + "/followers.txt")
