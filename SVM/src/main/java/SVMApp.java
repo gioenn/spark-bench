@@ -38,7 +38,7 @@ public class SVMApp {
             System.out.println("usage: <input> <output>  <maxIterations> <StorageLevel>");
             System.exit(0);
         }
-		Logger.getLogger("org.apache.spark").setLevel(Level.WARN);
+		Logger.getLogger("org.apache.spark").setLevel(Level.INFO);
 		Logger.getLogger("org.eclipse.jetty.server").setLevel(Level.OFF);
         String input = args[0];
         String output = args[1];
