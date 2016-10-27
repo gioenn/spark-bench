@@ -24,7 +24,7 @@ for((i=0;i<${NUM_TRIALS};i++)); do
 	OPTION=" ${INOUT_SCHEME}${INPUT_HDFS} ${INOUT_SCHEME}${OUTPUT_HDFS_Classification} ${NUM_OF_CLASS_C} ${impurityC} ${maxDepthC} ${maxBinsC} ${modeC}"
 START_TS=`get_start_ts`;
 	START_TIME=`timestamp`
-	echo_and_run sh -c " ${SPARK_HOME}/bin/spark-submit --class $CLASS --master ${SPARK_MASTER} ${YARN_OPT} ${SPARK_OPT} ${SPARK_RUN_OPT} $JAR ${OPTION} 2>&1|tee ${BENCH_NUM}/DecisionTree_run_${START_TS}.dat"
+	echo_and_run sh -c " ${SPARK_HOME}/bin/spark-submit --class $CLASS --master ${SPARK_MASTER} ${YARN_OPT} ${SPARK_OPT} ${SPARK_RUN_OPT} $JAR ${OPTION} > ${BENCH_NUM}/${APP}_run_${START_TS}.dat 2>&1"
 res=$?;
 	END_TIME=`timestamp`
 get_config_fields >> ${BENCH_REPORT}
